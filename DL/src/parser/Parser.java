@@ -149,7 +149,7 @@ public class Parser {
 
     private Expr term() {
         Expr e = factor();
-        while (look.tag() == Tag.MUL) {
+        while (look.tag() == Tag.MUL || look.tag() == Tag.DIV) {
             Token op = move();
             e = new Bin(op, e, factor());
         }

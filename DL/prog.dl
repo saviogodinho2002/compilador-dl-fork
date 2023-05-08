@@ -2,10 +2,12 @@ programa soma inicio
     real a;
     inteiro b;
     inteiro c;
+    real d;
     a = (1 | 2) & 1;
     b = 3;
     c = a + b;
     escreva(c);
+    d = a * b / a;
     enquanto (a < b & b != 0) inicio
     a = a + 1;
     fim;
