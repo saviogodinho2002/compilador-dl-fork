@@ -20,17 +20,17 @@ public class Lexer {
             e.printStackTrace();
         }
         this.peek = ' ';
-        keywords = new Hashtable<>();
+        keywords = new Hashtable<String, Tag>();
         keywords.put("programa", Tag.PROGRAM);
         keywords.put("inicio", Tag.BEGIN);
         keywords.put("fim", Tag.END);
+        keywords.put("escreva", Tag.WRITE);
+        keywords.put("se", Tag.IF);
+        keywords.put("verdadeiro", Tag.TRUE);
+        keywords.put("falso", Tag.FALSE);
         keywords.put("inteiro", Tag.INT);
         keywords.put("real", Tag.REAL);
         keywords.put("booleano", Tag.BOOL);
-        keywords.put("verdadeiro", Tag.TRUE);
-        keywords.put("falso", Tag.FALSE);
-        keywords.put("leia", Tag.READ);
-        keywords.put("escreva", Tag.WRITE);
     }
 
     public static int line() {
@@ -103,19 +103,22 @@ public class Lexer {
             case '*':
                 nextChar();
                 return new Token(Tag.MUL, "*");
+            case '.':
+                nextChar();
+                return new Token(Tag.DOT, ".");
             case '!':
                 nextChar();
                 if (this.peek == '=') {
                     nextChar();
                     return new Token(Tag.NE, "!=");
                 }
-                return new Token(Tag.LNOT, "!");
+                return new Token(Tag.NOT, "!");
             case '|':
                 nextChar();
-                return new Token(Tag.LOR, "|");
+                return new Token(Tag.OR, "|");
             case '&':
                 nextChar();
-                return new Token(Tag.LAND, "&");
+                return new Token(Tag.AND, "&");
             case '<':
                 nextChar();
                 if (peek == '=') {
@@ -141,6 +144,7 @@ public class Lexer {
 
             case '(':
                 nextChar();
+
                 return new Token(Tag.LPAREN, "(");
             case ')':
                 nextChar();

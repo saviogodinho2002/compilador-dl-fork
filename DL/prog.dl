@@ -1,0 +1,9 @@
+programa soma inicio
+    real a;
+    inteiro b;
+    inteiro c;
+    a = 5.5;
+    b = 3;
+    c = a + b;
+    escreva(c);
+fim.

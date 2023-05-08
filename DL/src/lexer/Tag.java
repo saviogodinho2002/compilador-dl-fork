@@ -12,9 +12,9 @@ public enum Tag {
     MUL("MUL"),
     DIV("DIV"),
 
-    LOR("LOR"),
-    LAND("LAND"),
-    LNOT("LNOT"),
+    OR("OR"),
+    AND("AND"),
+    NOT("NOT"),
 
     LT("LT"),
     LE("LE"),
@@ -29,6 +29,9 @@ public enum Tag {
     EOF("EOF"),
     LPAREN("LPAREN"),
     RPAREN("RPAREN"),
+    DOT("DOT"),
+    // condicional
+    IF("IF"),
 
     LIT_INT("LIT_INT"),
     LIT_REAL("LIT_REAL"),
@@ -39,7 +42,7 @@ public enum Tag {
     FALSE("FALSE"),
     READ("READ"),
     WRITE("WRITE"),
-    
+    TEMP("TEMP"),
     ID("ID"),
     UNK("UNK");
 
