@@ -31,6 +31,7 @@ public class Lexer {
         keywords.put("inteiro", Tag.INT);
         keywords.put("real", Tag.REAL);
         keywords.put("booleano", Tag.BOOL);
+        keywords.put("enquanto", Tag.WHERE);
     }
 
     public static int line() {

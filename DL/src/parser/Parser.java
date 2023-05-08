@@ -46,7 +46,7 @@ public class Parser {
         Stmt b = block();
         match(Tag.DOT);
         match(Tag.EOF);
-        return new Program(tokId, (Block)b);
+        return new Program(tokId, (Block) b);
     }
 
     private Stmt block() {
@@ -74,6 +74,8 @@ public class Parser {
                 return ifStmt();
             case WRITE:
                 return writeStmt();
+            case WHERE:
+                return whereStmt();
             default:
                 error("Comando inválido");
         }
@@ -188,6 +190,15 @@ public class Parser {
         return new If(e, s1);
     }
 
+    private Stmt whereStmt() {
+        match(Tag.WHERE);
+        match(Tag.LPAREN);
+        Expr e = expr();
+        match(Tag.RPAREN);
+        Stmt s1 = stmt();
+        return new Where(e, s1);
+    }
+
     private Stmt writeStmt() {
         move();
         match(Tag.LPAREN);
@@ -197,7 +208,7 @@ public class Parser {
         return new Write(id);
     }
 
-    public String parserTree(){
+    public String parserTree() {
         return root.str();
     }
 }

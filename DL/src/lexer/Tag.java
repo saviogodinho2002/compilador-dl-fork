@@ -44,8 +44,8 @@ public enum Tag {
     WRITE("WRITE"),
     TEMP("TEMP"),
     ID("ID"),
-    UNK("UNK");
-
+    UNK("UNK"),
+    WHERE("WHERE");
     private String name;
 
     private Tag(String name) {

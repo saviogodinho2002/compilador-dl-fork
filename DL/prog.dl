@@ -6,4 +6,7 @@ programa soma inicio
     b = 3;
     c = a + b;
     escreva(c);
+    enquanto (a < b) inicio
+    a = a + 1;
+    fim;
 fim.
