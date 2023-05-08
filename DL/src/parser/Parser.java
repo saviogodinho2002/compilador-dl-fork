@@ -99,36 +99,39 @@ public class Parser {
 
     private Expr expr() {
         Expr e = __rel();
-        while (look.tag() == Tag.OR) {
-            move();
-            e = new Or(e, __rel());
+        while (look.tag() == Tag.OR || look.tag() == Tag.AND) {
+            Token op = move();
+            e = new Logical(op,  e, __rel());
         }
         return e;
     }
 
-    private void rel() {
-        arith();
-        rel_();
-    }
-
-    private void rel_() {
-        switch (look.tag()) {
-            case LT:
-            case LE:
-            case GT:
-                move();
-                arith();
-                rel_();
-                break;
-            default:
-        }
-    }
-
+    /*
+     * private void rel() {
+     * arith();
+     * rel_();
+     * }
+     * 
+     * private void rel_() {
+     * switch (look.tag()) {
+     * case LT:
+     * case LE:
+     * case GT:
+     * move();
+     * arith();
+     * rel_();
+     * break;
+     * default:
+     * }
+     * }
+     */
     private Expr __rel() {
         Expr e = arith();
         while (look.tag() == Tag.LT ||
                 look.tag() == Tag.LE ||
-                look.tag() == Tag.GT) {
+                look.tag() == Tag.GT || 
+                look.tag() == Tag.NE ||
+                look.tag() == Tag.EQUALS  ) {
             Token op = move();
             e = new Rel(op, e, arith());
         }

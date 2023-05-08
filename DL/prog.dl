@@ -2,11 +2,11 @@ programa soma inicio
     real a;
     inteiro b;
     inteiro c;
-    a = 5.5;
+    a = (1 | 2) & 1;
     b = 3;
     c = a + b;
     escreva(c);
-    enquanto (a < b) inicio
+    enquanto (a < b & b != 0) inicio
     a = a + 1;
     fim;
 fim.
