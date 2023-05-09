@@ -8,6 +8,9 @@ public class If extends Stmt {
     public If(Expr e, Stmt s) {
         expr = e;
         stmt = s;
+        if(!e.type().isBool()){
+            error("No comando 'se' é esperado que é seja do tipo booleano");
+        }
         addChild(expr);
         addChild(s);
     }

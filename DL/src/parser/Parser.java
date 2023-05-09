@@ -1,7 +1,14 @@
 package parser;
 
+import java.util.Hashtable;
+
 import inter.*;
+import inter.expr.Bin;
 import inter.expr.Expr;
+import inter.expr.Id;
+import inter.expr.Literal;
+import inter.expr.Logical;
+import inter.expr.Rel;
 import inter.stmt.*;
 import lexer.Lexer;
 import lexer.Tag;
@@ -11,10 +18,20 @@ public class Parser {
     private Lexer lexer;
     private Token look;
     private Node root;
+    private Hashtable<String, Id> table;
 
     public Parser(Lexer lexer) {
         this.lexer = lexer;
+        table = new Hashtable<>();
         move();
+    }
+
+    public void printTable() {
+        for (var key : this.table.keySet()) {
+            System.out.println("Id : " + key
+                    + "\t\t Tipo : "
+                    + table.get(key).type().toString());
+        }
     }
 
     private Token move() {
@@ -85,13 +102,17 @@ public class Parser {
     private Stmt decl() {
         Token type = move();
         Token tokId = match(Tag.ID);
-        Id id = new Id(tokId, type.tag());
-        return new Decl(id);
+        if (table.get(tokId.lexeme()) == null) {
+            Id id = new Id(tokId, type.tag());
+            table.put(tokId.lexeme(), id);
+            return new Decl(id);
+        }
+        error("Variável '" + tokId.lexeme() + "' já foi declarada");
+        return null;
     }
 
     private Stmt assign() {
-        Token tok = match(Tag.ID);
-        var id = new Id(tok, null);
+        Id id = findId(match(Tag.ID));
         match(Tag.ASSIGN);
         Expr e = expr();
         return new Assign(id, e);
@@ -101,7 +122,7 @@ public class Parser {
         Expr e = __rel();
         while (look.tag() == Tag.OR || look.tag() == Tag.AND) {
             Token op = move();
-            e = new Logical(op,  e, __rel());
+            e = new Logical(op, e, __rel());
         }
         return e;
     }
@@ -129,9 +150,9 @@ public class Parser {
         Expr e = arith();
         while (look.tag() == Tag.LT ||
                 look.tag() == Tag.LE ||
-                look.tag() == Tag.GT || 
-                look.tag() == Tag.NE ||
-                look.tag() == Tag.EQUALS  ) {
+                look.tag() == Tag.GT ||
+                look.tag() == Tag.NEQUALS ||
+                look.tag() == Tag.EQUALS) {
             Token op = move();
             e = new Rel(op, e, arith());
         }
@@ -175,8 +196,7 @@ public class Parser {
                 e = new Literal(move(), Tag.BOOL);
                 break;
             case ID:
-                Token tok = move();
-                e = new Id(tok, null);
+                e = findId(match(Tag.ID));
                 break;
             default:
                 error("Expressão inválida");
@@ -205,13 +225,20 @@ public class Parser {
     private Stmt writeStmt() {
         move();
         match(Tag.LPAREN);
-        Token tok = match(Tag.ID);
-        var id = new Id(tok, null);
+        var id = findId(match(Tag.ID));
         match(Tag.RPAREN);
         return new Write(id);
     }
 
     public String parserTree() {
         return root.str();
+    }
+
+    private Id findId(Token tokId) {
+        Id id = table.get(tokId.lexeme());
+        if (id == null) {
+            error("Variável '" + tokId.lexeme() + "' não foi declarada");
+        }
+        return id;
     }
 }

@@ -13,7 +13,13 @@ public class DL {
 		Parser p = new Parser(l);
         
 		p.parse();
-		System.out.println("FINALIZADO");
+		System.out.println("Compilado com sucesso! (de alguma forma)");
+		System.out.println();
+		System.out.println("Árvore de derivação");
 		System.out.println( p.parserTree());
+		System.out.println();
+		System.out.println();
+		System.out.println( "TABELA DE SÍMBOLOS");
+		p.printTable();
     }
 }

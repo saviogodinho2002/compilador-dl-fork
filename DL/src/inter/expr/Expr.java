@@ -6,16 +6,16 @@ import lexer.Token;
 
 public abstract class Expr extends Node {
     protected Token op;
-    protected Tag type;
+	protected Tag type;
 
     public Expr(Token op,Tag type){
         this.op = op;
         this.type = type;
     }
-    public Token getOp(){
+    public Token op(){
         return op;
     }
-    public  Tag getType(){
+    public  Tag type(){
         return type;
     }
 

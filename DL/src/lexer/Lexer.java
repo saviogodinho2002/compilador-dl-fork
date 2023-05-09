@@ -111,7 +111,7 @@ public class Lexer {
                 nextChar();
                 if (this.peek == '=') {
                     nextChar();
-                    return new Token(Tag.NE, "!=");
+                    return new Token(Tag.NEQUALS, "!=");
                 }
                 return new Token(Tag.NOT, "!");
             case '|':

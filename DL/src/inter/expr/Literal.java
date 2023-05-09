@@ -1,6 +1,5 @@
-package inter;
+package inter.expr;
 
-import inter.expr.Expr;
 import lexer.Tag;
 import lexer.Token;
 

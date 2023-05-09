@@ -1,6 +1,6 @@
 package inter.stmt;
 
-import inter.Id;
+import inter.expr.Id;
 import lexer.Tag;
 
 public class Write extends Stmt {
@@ -8,6 +8,9 @@ public class Write extends Stmt {
 
     public Write(Id i) {
         id = i;
+        if(!i.type().isNum()){
+            error("Escrever só pode imprimir o valor de variáveis numéricas");
+        }
         addChild(id);
     }
 

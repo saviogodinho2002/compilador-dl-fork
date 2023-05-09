@@ -2,13 +2,20 @@ programa soma inicio
     real a;
     inteiro b;
     inteiro c;
+    booleano e;
     real d;
-    a = (1 | 2) & 1;
+    e = verdadeiro;
     b = 3;
-    c = a + b;
-    escreva(c);
-    d = a * b / a;
+    d = 2 + a * b / a;
+
+    e = (1 < 2) & 2 < 3 | 1 < 0;
+    //escreva(e);
+
     enquanto (a < b & b != 0) inicio
-    a = a + 1;
+        a = a + 1;
+    fim;
+
+    se (1 != a) inicio
+        escreva(d);
     fim;
 fim.

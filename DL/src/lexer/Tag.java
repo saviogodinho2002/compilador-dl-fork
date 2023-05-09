@@ -4,7 +4,6 @@ public enum Tag {
     // Palavras reservadas
     PROGRAM("PROGRAM"),
     BEGIN("BEGIN"), END("END"),
-    
 
     ASSIGN("ASSIGN"),
     SUM("SUM"),
@@ -20,12 +19,12 @@ public enum Tag {
     LE("LE"),
     GT("GT"),
     GE("GE"),
-    NE("NE"),
+    NEQUALS("NEQUALS"),
     EQUALS("EQUALS"),
 
     COMMA("COMMA"),
     SEMI("SEMI"),
-    
+
     EOF("EOF"),
     LPAREN("LPAREN"),
     RPAREN("RPAREN"),
@@ -46,10 +45,31 @@ public enum Tag {
     ID("ID"),
     UNK("UNK"),
     WHERE("WHERE");
+
     private String name;
 
     private Tag(String name) {
         this.name = name;
+    }
+
+    public boolean isReal() {
+        return this == Tag.REAL;
+    }
+
+    public boolean isInt() {
+        return this == Tag.INT;
+    }
+
+    public boolean isBool() {
+        return this == Tag.BOOL;
+    }
+
+    public boolean isNum() {
+        return (isInt() || isReal());
+    }
+
+    public boolean isType() {
+        return isNum() || isBool();
     }
 
     @Override

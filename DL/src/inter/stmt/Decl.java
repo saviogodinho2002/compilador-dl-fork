@@ -1,6 +1,6 @@
 package inter.stmt;
 
-import inter.Id;
+import inter.expr.Id;
 
 public class Decl extends Stmt{
     private Id id;
