@@ -19,7 +19,7 @@ public class DL {
 		System.out.println( p.parserTree());
 		System.out.println();
 		System.out.println();
-		System.out.println( "TABELA DE SÍMBOLOS");
-		p.printTable();
+		/* System.out.println( "TABELA DE SÍMBOLOS");
+		p.printTable(); */
     }
 }

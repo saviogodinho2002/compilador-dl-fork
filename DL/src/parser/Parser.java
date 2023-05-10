@@ -1,6 +1,8 @@
 package parser;
 
+import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Stack;
 
 import inter.*;
 import inter.expr.Bin;
@@ -18,19 +20,23 @@ public class Parser {
     private Lexer lexer;
     private Token look;
     private Node root;
-    private Hashtable<String, Id> table;
+
+    private Stack<HashMap<String, Id>> tables;
 
     public Parser(Lexer lexer) {
         this.lexer = lexer;
-        table = new Hashtable<>();
+
+        this.tables = new Stack<>();
         move();
     }
 
     public void printTable() {
-        for (var key : this.table.keySet()) {
+        var it = this.tables.peek();
+        System.out.println("Tabela de Símbolos ");
+        for (var key : it.keySet()) {
             System.out.println("Id : " + key
                     + "\t\t Tipo : "
-                    + table.get(key).type().toString());
+                    + it.get(key).type().toString());
         }
     }
 
@@ -63,17 +69,21 @@ public class Parser {
         Stmt b = block();
         match(Tag.DOT);
         match(Tag.EOF);
+
         return new Program(tokId, (Block) b);
     }
 
     private Stmt block() {
         Block b = new Block();
         match(Tag.BEGIN);
+        this.tables.push(new HashMap<>());
         while (look.tag() != Tag.END) {
             b.addStmt(stmt());
             match(Tag.SEMI);
         }
         match(Tag.END);
+        printTable();
+        this.tables.pop();
         return b;
     }
 
@@ -99,12 +109,27 @@ public class Parser {
         return null;
     }
 
+    private Id findIdInTables(Token token) {
+        var it = this.tables.elements().asIterator();
+        Id el = null;
+        while (it.hasNext()) {
+            var table = it.next();
+            el = table.get(token.lexeme());
+            if (el != null)
+                return el;
+        }
+        if (el == null) {
+            error("Variável '" + token.lexeme() + "' não foi declarada");
+        }
+        return null;
+    }
+
     private Stmt decl() {
         Token type = move();
         Token tokId = match(Tag.ID);
-        if (table.get(tokId.lexeme()) == null) {
+        if (this.tables.peek().get(tokId.lexeme()) == null) {
             Id id = new Id(tokId, type.tag());
-            table.put(tokId.lexeme(), id);
+            this.tables.peek().put(tokId.lexeme(), id);
             return new Decl(id);
         }
         error("Variável '" + tokId.lexeme() + "' já foi declarada");
@@ -112,7 +137,7 @@ public class Parser {
     }
 
     private Stmt assign() {
-        Id id = findId(match(Tag.ID));
+        Id id = findIdInTables(match(Tag.ID));
         match(Tag.ASSIGN);
         Expr e = expr();
         return new Assign(id, e);
@@ -196,7 +221,7 @@ public class Parser {
                 e = new Literal(move(), Tag.BOOL);
                 break;
             case ID:
-                e = findId(match(Tag.ID));
+                e = findIdInTables(match(Tag.ID));
                 break;
             default:
                 error("Expressão inválida");
@@ -225,7 +250,7 @@ public class Parser {
     private Stmt writeStmt() {
         move();
         match(Tag.LPAREN);
-        var id = findId(match(Tag.ID));
+        var id = findIdInTables(match(Tag.ID));
         match(Tag.RPAREN);
         return new Write(id);
     }
@@ -234,11 +259,13 @@ public class Parser {
         return root.str();
     }
 
-    private Id findId(Token tokId) {
-        Id id = table.get(tokId.lexeme());
-        if (id == null) {
-            error("Variável '" + tokId.lexeme() + "' não foi declarada");
-        }
-        return id;
-    }
+    /*
+     * private Id findId(Token tokId) {
+     * Id id = table.get(tokId.lexeme());
+     * if (id == null) {
+     * error("Variável '" + tokId.lexeme() + "' não foi declarada");
+     * }
+     * return id;
+     * }
+     */
 }

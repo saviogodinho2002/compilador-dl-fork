@@ -4,6 +4,7 @@ programa soma inicio
     inteiro c;
     booleano e;
     real d;
+
     e = verdadeiro;
     b = 3;
     d = 2 + a * b / a;
@@ -12,10 +13,18 @@ programa soma inicio
     //escreva(e);
 
     enquanto (a < b & b != 0) inicio
+        real z;
         a = a + 1;
+        enquanto (a < b & b != 0) inicio
+            real z;
+            real y;
+            a = a + 1;
+            y = 0.0;
+        fim;
     fim;
 
     se (1 != a) inicio
+       real w;
         escreva(d);
     fim;
 fim.
